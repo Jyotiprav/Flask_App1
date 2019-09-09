@@ -1,0 +1,75 @@
+from flask import Flask, flash, redirect, url_for
+from flask import render_template
+from config import Config
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from forms import LoginForm, addinfo
+import sqlite3 as sql
+app = Flask(__name__)
+app.config.from_object(Config)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+#------------------------------------#
+#        Index/Home Page
+#------------------------------------#
+@app.route('/')
+@app.route('/index')
+def index():
+    user = {'username': 'Jyoti'}
+    posts = [
+        {
+            'author': {'username': 'John'},
+            'body': 'Flask is simpler than Django '
+        },
+        {
+            'author': {'username': 'Susan'},
+            'body': 'This application is so cool!'
+        }
+    ]
+    return render_template('index.html', title='Home', user=user, posts=posts)
+
+#------------------------------------#
+#             Login Page
+#------------------------------------#
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    L=False
+    if form.validate_on_submit():
+        with sql.connect("info_db.db") as con:
+            con.row_factory = sql.Row
+            cur = con.cursor()
+            cur.execute("select * from information")
+            rows = cur.fetchall()
+            for r in rows:
+                if form.username.data == r['username'] and form.password.data==r['password']:
+                    L=True
+                    break
+            if L==True:
+                flash('Login Successful')
+            else:
+                flash('Login Unsuccessful')
+            con.commit()
+        return redirect(url_for('index'))
+    return render_template('login.html', title='Sign In', form=form)
+#------------------------------------#
+#     Add Information Page
+#------------------------------------#
+@app.route('/Add', methods=['GET', 'POST'])
+def Add():
+    form = addinfo()
+    if form.validate_on_submit():
+        flash('Information Added')
+        with sql.connect("info_db.db") as con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO information (username, password, email, phoneno) VALUES(?, ?, ?, ?)",(form.username.data,form.password.data,form.email.data,form.phoneno.data) )
+            con.commit()
+        return redirect(url_for('index'))
+    return render_template('add_info.html', title='Add Your Information', form=form)
+
+
+
+
+
+if __name__=='__main__':
+    app.run()
