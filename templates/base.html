@@ -1,0 +1,82 @@
+<html>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Create two columns/boxes that floats next to each other */
+nav {
+  float: left;
+  width: 20%;
+  height: 500px; /* only for demonstration, should be removed */
+  background: #ccc;
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+article {
+  float: left;
+  padding: 20px;
+  width: 80%;
+  background-color: #f1f1f1;
+  height: 500px; /* only for demonstration, should be removed */
+}
+
+
+</style>
+<header>
+    <h2>Flask_App with SQLite Database</h2>
+    <head>
+      {% if title %}
+      <title>{{ title }} - App1</title>
+      {% else %}
+      <title>Welcome</title>
+      {% endif %}
+    </head>
+</header>
+    <body>
+    <section>
+        <nav>
+         <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+             <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('Add') }}">Add Information</a></li>
+        </ul>
+        </nav>
+        <article>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+        </article>
+    </section>
+    </body>
+</html>
