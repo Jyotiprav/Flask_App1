@@ -1,14 +1,14 @@
 from flask import Flask, flash, redirect, url_for
 from flask import render_template
 from config import Config
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from forms import LoginForm, addinfo
+from forms import LoginForm, addinfo, searchinfo
 import sqlite3 as sql
 app = Flask(__name__)
 app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+#db = SQLAlchemy(app)
+#migrate = Migrate(app, db)
 #------------------------------------#
 #        Index/Home Page
 #------------------------------------#
@@ -67,9 +67,42 @@ def Add():
         return redirect(url_for('index'))
     return render_template('add_info.html', title='Add Your Information', form=form)
 
-
-
-
+#------------------------------------#
+#     Show Information Page
+#------------------------------------#
+@app.route('/show', methods=['GET','POST'])
+def show():
+    with sql.connect("info_db.db") as con:
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("select * from information")
+        rows = cur.fetchall()
+    return render_template('show.html', title='Show', rows=rows)
+#------------------------------------#
+#     Search Information Page
+#------------------------------------#
+@app.route('/search', methods=['GET','POST'])
+def search():
+    form = searchinfo()
+    L=False
+    if form.validate_on_submit():
+        with sql.connect("info_db.db") as con:
+            con.row_factory = sql.Row
+            cur = con.cursor()
+            cur.execute("select * from information")
+            rows = cur.fetchall()
+            for r in rows:
+                if form.username.data == r['username']:
+                    #L=True
+                    return render_template('search1.html', title='Search', r=r)
+                    '''break
+            if L==True:
+                return render_template('search1.html', title='Search', row=r)
+            else:
+                flash('Login Unsuccessful')'''
+            con.commit()
+        return redirect(url_for('index'))
+    return render_template('search.html', title='Search', form=form)
 
 if __name__=='__main__':
     app.run()
