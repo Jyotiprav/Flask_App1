@@ -25,7 +25,7 @@ section:after {
 nav {
   float: left;
   width: 20%;
-  height: 500px; /* only for demonstration, should be removed */
+  height: 1500px; /* only for demonstration, should be removed */
   background: #ccc;
   padding: 20px;
 }
@@ -40,7 +40,7 @@ article {
   padding: 20px;
   width: 80%;
   background-color: #f1f1f1;
-  height: 500px; /* only for demonstration, should be removed */
+  height: 1500px; /* only for demonstration, should be removed */
 }
 
 
@@ -62,6 +62,10 @@ article {
             <li><a href="{{ url_for('index') }}">Home</a></li>
              <li><a href="{{ url_for('login') }}">Login</a></li>
             <li><a href="{{ url_for('Add') }}">Add Information</a></li>
+             <li><a href="{{ url_for('show') }}">Show</a></li>
+             <li><a href="{{ url_for('search') }}">Search</a></li>
+
+
         </ul>
         </nav>
         <article>
