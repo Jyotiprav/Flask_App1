@@ -13,7 +13,7 @@ The goal of this application is to use the Flask framework of python and make ba
 All forms are connected to info_db. If user's information is in database only then user can login.
 
 ### ScreenShots
-![Project Image 1](pic1.PNG)
+![Project Image 1](pic1.png)
 
 ![Project Image 1](p2.PNG)
 
