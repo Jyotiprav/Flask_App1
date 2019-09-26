@@ -14,3 +14,7 @@ class addinfo(FlaskForm):
     email=StringField('Email')
     phoneno=StringField('Phone Number')
     submit = SubmitField('Add')
+    
+class searchinfo(FlaskForm):
+    username=StringField('Username')
+    submit=SubmitField('Search')
