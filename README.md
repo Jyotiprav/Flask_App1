@@ -20,3 +20,11 @@ All forms are connected to info_db. If user's information is in database only th
 ![Project Image 1](p2.PNG)
 
 ![Project Image 1](p3.PNG)
+
+### Setup to run the application:
+1. Download the file.
+2. Create virtual enviornment using py -m venv venv
+3. Activate the venv virtual env.
+4. pip install flask_wtf
+5. pip install flask
+
